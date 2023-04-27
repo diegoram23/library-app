@@ -10,3 +10,17 @@ body {
 article {
     border: 1px solid red;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, select{
+    max-width: 100px;
+}
+
+button {
+width: 150px;
+margin: 10px 0;
+}
