@@ -1,0 +1,12 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#books {
+    border: 1px solid green;
+}
+
+article {
+    border: 1px solid red;
+}
