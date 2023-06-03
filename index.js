@@ -1,78 +1,95 @@
+const books = document.getElementById('books')
+const form = document.getElementById('form')
 const title = document.getElementById('title')
 const author = document.getElementById('author')
 const pages = document.getElementById('pages')
-const read = document.getElementById('read')
-const form = document.getElementById('form')
-const books = document.getElementById('books')
+const isRead = document.getElementById('isRead')
+const deleteBtn = document.getElementById('delete-btn')
+
+
 
 let myLibrary = [
-    book1 = {
-        title: 'the day we met',
-        author: 'michael simmons',
-        pages: 230,
-        read: 'yes'
+
+    {
+        title: 'The Hobbit',
+        author: 'J.K Rowling',
+        pages: '23',
+        isRead: false,
     },
-    book2 = {
-        title: 'the red cat',
-        author: 'Jefferey Bezos',
-        pages: 145,
-        read: 'no'
+
+    {
+        title: 'Spider-Man',
+        author: 'Jeffrey Epstein',
+        pages: '185',
+        isRead: true,
     }
+
 ]
-
-function getBooksHtml() {
-    let booksHtml = ''
-    myLibrary.forEach(book => {
-        console.log(book);
-        booksHtml += `
-        <article>
-        <h3 id="book-title">Title: ${book.title}</h3>
-        <strong id="book-author">Author: ${book.author}</strong>
-        <p>Number of pages: ${book.pages}</p>
-        <p>Read? ${book.read}</p>
-        <button id='remove-btn' data-remove='${book.title}'>Remove book</button>
-    </article>
-    `
-
-    })
-  
-
-    books.innerHTML = booksHtml
-}
 
 document.addEventListener('click', (e) => {
     if (e.target.dataset.remove) {
         removeBook(e.target.dataset.remove)
     }
+
+    if (e.target.dataset.update) {
+        toggleRead(e.target.dataset.update)
+    }
 })
 
-function Book(title, author, pages, read) {
-    this.title = title,
-        this.author = author,
-        this.pages = pages,
-        this.read = read
+
+class Book {
+    constructor(title, author, pages, isRead) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.isRead = isRead
+    }
 }
 
-function addBookToLibrary() {
-    myLibrary.push(new Book(title.value, author.value, pages.value, read.value))
+
+Book.prototype.toggleRead = function () {
+    return this.isRead = !this.isRead
+}
+
+function toggleRead(i) {
+    console.log(typeof myLibrary)
+    console.log(i)
+    console.log(myLibrary[i])
+    myLibrary[i].toggleRead()
+    getBooksHtml()
+}
+
+function addBook() {
+    myLibrary.push(new Book(title.value, author.value, pages.value, isRead.value))
 }
 
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
-    addBookToLibrary()
+    addBook()
     getBooksHtml()
-    console.log(myLibrary)
-
 })
 
-function removeBook(bookId) {
-myLibrary = myLibrary.filter(book => bookId !== book.title)
-getBooksHtml()
+function removeBook(title) {
+    myLibrary = myLibrary.filter(book => title !== book.title)
+    getBooksHtml()
 }
 
-console.log(myLibrary);
+function getBooksHtml() {
+    let booksHtml = ''
+    myLibrary.forEach((book, index) => {
+        booksHtml += `
+        <article>
+            <h2>${book.title}</h2>
+            <p>By: ${book.author}</p>
+            <p>Pages: ${book.pages}</p>
+            <p>Read? ${book.isRead}</p>
+            <button data-remove='${book.title}'>Delete</button>
+            <button data-update='${index}' >Update Read</button>
+        </article>
+        `
+    })
+    books.innerHTML = booksHtml
+}
+
 getBooksHtml()
-
-
-
